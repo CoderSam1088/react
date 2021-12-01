@@ -18,7 +18,7 @@ class Board extends React.Component {
     return (
     <Square
      value={this.props.squares[i]}
-     onClick={() => this.props.onClick(i)} 
+     onClick={() => this.props.onClick(i)}
     />
     );
   }
@@ -62,12 +62,23 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
+    //i represents the square chosen
+    //create a variable to store the history
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
+
+    //set the board to the last element in the history
     const current = history[history.length - 1];
+
+    //gets the current square setup for all squares
     const squares = current.squares.slice();
+
+    //uses calculate winner function to see if the game is won;
+    //ends the game by breaking out of handleClick function
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
+
+    //determines what user is next
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       history: history.concat([
@@ -88,7 +99,6 @@ class Game extends React.Component {
     });
   }
 
-  
 
   render() {
     const history = this.state.history;
@@ -100,6 +110,7 @@ class Game extends React.Component {
       const desc = move ?
        'Go to move #' + move :
        'Go to game start';
+       console.log(step);
       return (
         <li key={move}>
           <button className="buttmove" onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -156,4 +167,19 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function givecoords(i) {
+  //i represents the square chosen
+  var x;
+  var y;
+  x = (x + 1) % 3
+  if (i < 3) {
+    y = 1;
+  } else if(x < 6) {
+    y = 2;
+  } else {
+    y = 3;
+  }
+  return "(" + x + ", "  +y + ")";
 }

@@ -1,6 +1,6 @@
 body {
-  font: 40px "Century Gothic", Futura, sans-serif;
-  margin: 100px;
+  font: 30px "Century Gothic", Futura, sans-serif;
+  margin: 80px;
 }
 
 ol, ul {
@@ -18,7 +18,7 @@ ol, ul {
 }
 
 .buttmove {
-  font: 40px "Century Gothic", Futura, sans-serif;
+  font: 30px "Century Gothic", Futura, sans-serif;
 }
 
 .square {
@@ -52,4 +52,3 @@ ol, ul {
 .game-info {
   margin-left: 100px;
 }
-
