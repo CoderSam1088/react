@@ -54,10 +54,12 @@ class Game extends React.Component {
       history: [
         {
         squares: Array(9).fill(null),
+        coords: null
       }
     ],
       stepNumber: 0,
       xIsNext: true,
+      coords: null
     };
   }
 
@@ -72,27 +74,39 @@ class Game extends React.Component {
     //gets the current square setup for all squares
     const squares = current.squares.slice();
 
+    const vals = givecoords(i);
+
     //uses calculate winner function to see if the game is won;
     //ends the game by breaking out of handleClick function
     if (calculateWinner(squares) || squares[i]) {
+
       return;
     }
 
     //determines what user is next
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
+      //adds a move to the history
       history: history.concat([
         {
-      squares: squares
+      squares: squares,
+      //adds the current grid to the history
+      coords: vals
       }
     ]),
+
+    //the current stepNumber is the length of the history
     stepNumber: history.length,
+
+    //changes xIsNext to true or false based on last move
     xIsNext: !this.state.xIsNext,
     });
+    //console.log(history);
   }
 
   jumpTo(step) {
     this.setState({
+      //changes the grid to the specified step in history
       stepNumber: step,
       //if step is even, x is next. Otherwise, o
       xIsNext: (step % 2) === 0
@@ -101,17 +115,37 @@ class Game extends React.Component {
 
 
   render() {
+    //create a variable for the history
     const history = this.state.history;
+
+
+
+    //sets the current setup to the previous step
     const current = history[this.state.stepNumber];
+
+    //create a variable to see if the game is one when rendering
     const winner = calculateWinner(current.squares);
+
+    //const coord = current.coords;
 
     //map move history
     const moves = history.map((step, move) => {
+
+      //check if move is 0 or something else
+      //if 0, the first button is created.
+      //otherwise, it says to go to the move number
+      //step represents the grid
+      //move represents what move we are on
+      const coord = step.coords;
+      console.log(coord);
+      //console.log(step);
+      //console.log(move);
+      //console.log(history.)
       const desc = move ?
-       'Go to move #' + move :
+       'Go to move #' + move + coord:
        'Go to game start';
-       console.log(step);
       return (
+        //create a button to go to that move
         <li key={move}>
           <button className="buttmove" onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
@@ -169,17 +203,17 @@ function calculateWinner(squares) {
   return null;
 }
 
-function givecoords(i) {
+function givecoords(k) {
   //i represents the square chosen
   var x;
   var y;
-  x = (x + 1) % 3
-  if (i < 3) {
+  x = (k%3) + 1;
+  if (k < 3) {
     y = 1;
-  } else if(x < 6) {
+  } else if(k < 6) {
     y = 2;
   } else {
     y = 3;
   }
-  return "(" + x + ", "  +y + ")";
+  return ": (" + x + ", "  + y + ")";
 }
